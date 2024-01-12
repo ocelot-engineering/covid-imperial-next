@@ -1,0 +1,18 @@
+{
+  // General
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.tabSize": 4,
+  "diffEditor.ignoreTrimWhitespace": true,
+
+  // Prettier
+  // "prettier.tabWidth": 4,
+  "prettier.printWidth": 80,
+  "prettier.singleQuote": true,
+
+  // Font
+  "[javascript][typescript][html][markdown]": {
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true
+  }
+}
