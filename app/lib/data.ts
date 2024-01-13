@@ -1,9 +1,10 @@
+import { getMaxDate, subMonths } from '@/app/lib/dates';
+
 export async function getData(params: any) {
   const endpoint = 'https://api.coronavirus.data.gov.uk/v1/data';
   const parsedParams = new URLSearchParams(params);
 
   const req = `${endpoint}?${parsedParams}`;
-  // console.log(req);
 
   const res = await fetch(req);
   const resposeBody = await res.json();
@@ -28,8 +29,10 @@ export async function fetchCases(region: string) {
     date: 'date',
     name: 'areaName',
     code: 'areaCode',
-    cases: 'newCasesByPublishDateRollingSum',
-    deaths: 'newDeaths28DaysByDeathDateRollingSum',
+    cases: 'newCasesBySpecimenDate',
+    rollingCases: 'newCasesBySpecimenDateRollingSum',
+    // cases: 'newCasesByPublishDateRollingSum',
+    // deaths: 'newDeaths28DaysByDeathDateRollingSum',
     // admissions: 'newAdmissions',
   };
 
@@ -41,5 +44,14 @@ export async function fetchCases(region: string) {
 
   const res = await getData(apiParams);
 
-  return res.data[0];
+  return res.data;
+}
+
+export function filterCases(data) {
+  const dateStrings = data.map((x) => x.date);
+  const maxDate = getMaxDate(dateStrings);
+  const startDate = subMonths(maxDate, 13);
+  const dataFiltered = data.filter((x) => x.date > startDate);
+
+  return dataFiltered;
 }

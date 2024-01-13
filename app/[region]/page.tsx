@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   title: 'London COVID-19 Cases',
 };
 
-export default async function Page() {
-  const newCases = await fetchCases('london');
+export default async function Page({ params }: { params: { region: string } }) {
+  const region = params.region;
+  const newCases = await fetchCases(region);
   const filteredNewCases = filterCases(newCases);
 
   return (
     <div>
-      <h1>LONDON !!!!!!!!!!!!!</h1>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <HeadlineFigureWrapper />
       </div>
