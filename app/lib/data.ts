@@ -1,6 +1,12 @@
 import { getMaxDate, subMonths } from '@/app/lib/dates';
 
-export async function getData(params: any) {
+// interface apiParameters {
+//   filters: string;
+//   structure: string;
+//   latestBy?: string;
+// }
+
+export async function getData(params: Record<string, string>) {
   const endpoint = 'https://api.coronavirus.data.gov.uk/v1/data';
   const parsedParams = new URLSearchParams(params);
 
@@ -13,44 +19,31 @@ export async function getData(params: any) {
     const reason = resposeBody.response;
 
     throw new Error(
-      `Failed to fetch data.\n[${res.status}] ${res.statusText}: ${reason}`
+      `Failed to fetch data.\n[${res.status}] ${res.statusText}: ${reason}\n${req}`
     );
   }
 
   return resposeBody;
 }
 
-export async function fetchCases(region: string) {
-  const areaType = 'region';
-  const areaName = region;
+export function buildApiFilters(region: string) {
+  const isOverview = /^united.*?kingdom$/i.test(region);
 
-  const filters = [`areaType=${areaType}`, `areaName=${areaName}`];
-  const structure = {
-    date: 'date',
-    name: 'areaName',
-    code: 'areaCode',
-    cases: 'newCasesBySpecimenDate',
-    rollingCases: 'newCasesBySpecimenDateRollingSum',
-    // cases: 'newCasesByPublishDateRollingSum',
-    // deaths: 'newDeaths28DaysByDeathDateRollingSum',
-    // admissions: 'newAdmissions',
-  };
+  const areaType = isOverview ? 'overview' : 'region';
+  const areaName = isOverview ? null : region;
 
-  const apiParams = {
-    filters: filters.join(';'),
-    structure: JSON.stringify(structure),
-    // latestBy: 'newCasesByPublishDate',
-  };
+  const filters = [`areaType=${areaType}`, areaName && `areaName=${areaName}`];
 
-  const res = await getData(apiParams);
-
-  return res.data;
+  return filters.join(';');
 }
 
-export function filterCases(data) {
+export function filterToRange(
+  data: { date: string }[],
+  months: number
+): { date: string }[] {
   const dateStrings = data.map((x) => x.date);
   const maxDate = getMaxDate(dateStrings);
-  const startDate = subMonths(maxDate, 13);
+  const startDate = subMonths(maxDate, months);
   const dataFiltered = data.filter((x) => x.date > startDate);
 
   return dataFiltered;

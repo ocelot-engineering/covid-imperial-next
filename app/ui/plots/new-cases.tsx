@@ -1,5 +1,6 @@
 'use client';
 
+import { PlotData, Layout } from 'plotly.js';
 import Plot from 'react-plotly.js';
 
 // interface NewCasesRecord {
@@ -16,9 +17,9 @@ export default function NewCasesLinePlot({ newCases }: any) {
   //   marker: { color: 'grey' },
   // };
 
-  const traceNewCasesRollingAverage = {
-    x: newCases.map((item) => item.date),
-    y: newCases.map((item) => item.rollingCases),
+  const traceNewCasesRollingAverage: Partial<PlotData> = {
+    x: newCases.map((item: { date: string }) => item.date),
+    y: newCases.map((item: { rollingCases: string }) => item.rollingCases),
     type: 'scatter',
     mode: 'lines',
     marker: { color: 'red' },
@@ -33,16 +34,14 @@ export default function NewCasesLinePlot({ newCases }: any) {
   };
 
   const xaxis = {
-    // title: 'Date',
     showgrid: false,
   };
 
   const yaxis = {
-    // title: 'Cases',
     showgrid: false,
   };
 
-  const layout = {
+  const layout: Partial<Layout> = {
     title: 'New Cases 7-day Rolling Average',
     xaxis: xaxis,
     yaxis: yaxis,

@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import HeadlineFigureWrapper from '@/app/ui/headline/headline-figures';
-import NewCasesLinePlot from '@/app/ui/plots/new-cases-plot-ts';
-import { fetchCases, filterCases } from '@/app/lib/data';
+// import NewCasesLinePlot from '@/app/ui/plots/new-cases';
+import { fetchCases } from '@/app/lib/cases';
+import { filterToRange } from '@/app/lib/data';
 
 export const metadata: Metadata = {
   title: 'London COVID-19 Cases',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const newCases = await fetchCases('london');
-  const filteredNewCases = filterCases(newCases);
+  const filteredNewCases = filterToRange(newCases, 13);
 
   return (
     <div>
@@ -18,7 +19,7 @@ export default async function Page() {
         <HeadlineFigureWrapper />
       </div>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 py-10 h-96">
-        <NewCasesLinePlot newCases={filteredNewCases} />
+        {/* <NewCasesLinePlot newCases={filteredNewCases} /> */}
         {/* <NewCasesLinePlot /> */}
       </div>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 py-10 h-96">
