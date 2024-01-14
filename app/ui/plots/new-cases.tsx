@@ -9,14 +9,6 @@ import Plot from 'react-plotly.js';
 // }
 
 export default function NewCasesLinePlot({ newCases }: any) {
-  // const traceNewCases = {
-  //   x: newCases.map((item) => item.date),
-  //   y: newCases.map((item) => item.cases),
-  //   type: 'scatter',
-  //   mode: 'lines',
-  //   marker: { color: 'grey' },
-  // };
-
   const traceNewCasesRollingAverage: Partial<PlotData> = {
     x: newCases.map((item: { date: string }) => item.date),
     y: newCases.map((item: { rollingCases: string }) => item.rollingCases),

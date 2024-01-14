@@ -1,11 +1,5 @@
 import { getMaxDate, subMonths } from '@/app/lib/dates';
 
-// interface apiParameters {
-//   filters: string;
-//   structure: string;
-//   latestBy?: string;
-// }
-
 export async function getData(params: Record<string, string>) {
   const endpoint = 'https://api.coronavirus.data.gov.uk/v1/data';
   const parsedParams = new URLSearchParams(params);

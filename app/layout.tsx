@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <div className="flex h-screen flex-col md:overflow-hidden">
           <HeaderNav />
-          <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
+          <div className="flex-grow p-6 md:overflow-y-auto md:p-12 bg-slate-200">
             {children}
           </div>
         </div>
