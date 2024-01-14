@@ -3,11 +3,6 @@
 import { PlotData, Layout } from 'plotly.js';
 import Plot from 'react-plotly.js';
 
-// interface NewCasesRecord {
-//   date: string;
-//   cases: number;
-// }
-
 export default function NewCasesLinePlot({ newCases }: any) {
   const traceNewCasesRollingAverage: Partial<PlotData> = {
     x: newCases.map((item: { date: string }) => item.date),

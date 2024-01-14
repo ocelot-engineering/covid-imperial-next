@@ -78,12 +78,12 @@ function HeadlineFigureCard({
   const Icon = iconMap[type];
 
   return (
-    <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
+    <div className="bg-gray-50 p-2 shadow-sm">
       <div className="flex p-4">
         {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
         <h3 className="ml-2 text-sm font-medium">{title}</h3>
       </div>
-      <div className="truncate rounded-xl bg-white px-4 py-6 text-center text-3xl">
+      <div className="truncate bg-white px-4 py-6 text-center text-3xl">
         {values.value}
         <div className="text-sm mt-1">{subtitle}</div>
         <HeadlineChange values={values} />
@@ -96,12 +96,13 @@ const changeIconMap = {
   UP: ArrowUpIcon,
   DOWN: ArrowDownIcon,
   SAME: ArrowRightIcon,
+  NONE: QuestionMarkCircleIcon,
 };
 
 function HeadlineChange({ values }: { values: HeadlineData }) {
   const Icon = changeIconMap[values.changeDirection] || QuestionMarkCircleIcon;
 
-  // forces grey when colouring is not appropriate
+  // force grey when colouring is not appropriate
   if (values.doNotColor) {
     values.changeDirection = 'NONE';
   }

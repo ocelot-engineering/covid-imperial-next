@@ -37,7 +37,9 @@ export default function VariantPlot({ variants }: any) {
     bargap: 0,
   };
 
-  return <Plot data={data} layout={layout} config={config} />;
+  return (
+    <Plot className="shadow-sm" data={data} layout={layout} config={config} />
+  );
 }
 
 function buildTraces(variants: any) {

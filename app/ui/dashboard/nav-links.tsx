@@ -1,8 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+import { usePathname, useRouter } from 'next/navigation';
 
 const links = [
   { name: 'East Midlands', href: 'East Midlands' },
@@ -19,27 +17,21 @@ const links = [
   return link;
 });
 
-export default function NavLinks() {
+export default function NavDropdown() {
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
-    <>
-      {links.map((link) => {
-        return (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={clsx(
-              'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
-              {
-                'bg-sky-100 text-blue-600': pathname == link.href,
-              }
-            )}
-          >
-            {link.name}
-          </Link>
-        );
-      })}
-    </>
+    <select
+      className="rounded-md border border-gray-200 py-[9px] px-6 text-sm outline-2 h-10 content-center"
+      onChange={(event) => router.push(event.target.value)}
+      defaultValue={pathname}
+    >
+      {links.map((link) => (
+        <option key={link.name} value={link.href}>
+          {link.name}
+        </option>
+      ))}
+    </select>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { inter } from '@/app/ui/fonts';
 import '@/app/ui/globals.css';
+import HeaderNav from '@/app/ui/dashboard/headernav';
 
 export const metadata: Metadata = {
   title: 'UK COVID-19 Dashboard',
@@ -17,7 +18,12 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased bg-gradient-to-r from-slate-200 to-blue-100`}
       >
-        {children}
+        <div className="flex h-screen flex-col md:overflow-hidden">
+          <HeaderNav />
+          <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
