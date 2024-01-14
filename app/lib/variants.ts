@@ -1,4 +1,5 @@
 import { getData, buildApiFilters, filterToRange } from '@/app/lib/data';
+import { RegionAreaName } from '@/app/lib/types';
 
 interface VariantDateRow {
   date: string;
@@ -17,7 +18,7 @@ interface VariantDataTransformed {
   };
 }
 
-export async function fetchVariants(region: string) {
+export async function fetchVariants(region: RegionAreaName) {
   const structure = {
     date: 'date',
     name: 'areaName',
@@ -26,7 +27,7 @@ export async function fetchVariants(region: string) {
   };
 
   const apiParams = {
-    filters: buildApiFilters(region),
+    filters: buildApiFilters({ areaType: 'region', areaName: region }),
     structure: JSON.stringify(structure),
   };
 

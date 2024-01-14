@@ -1,4 +1,5 @@
 import { getData, buildApiFilters } from '@/app/lib/data';
+import { RegionAreaName } from '@/app/lib/types';
 
 /**
  * Fetches the headline deaths for a specific region.
@@ -6,7 +7,7 @@ import { getData, buildApiFilters } from '@/app/lib/data';
  * @param region The region for which to fetch the headline death.
  * @returns A promise that resolves to the fetched headline death data.
  */
-export async function fetchHeadlineDeaths(region: string) {
+export async function fetchHeadlineDeaths(region: RegionAreaName) {
   const structure = {
     date: 'date',
     name: 'areaName',
@@ -18,7 +19,7 @@ export async function fetchHeadlineDeaths(region: string) {
   };
 
   const apiParams = {
-    filters: buildApiFilters(region),
+    filters: buildApiFilters({ areaType: 'region', areaName: region }),
     structure: JSON.stringify(structure),
     latestBy: 'newDeaths28DaysByPublishDateRollingSum',
   };

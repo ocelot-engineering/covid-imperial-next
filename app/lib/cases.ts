@@ -1,4 +1,5 @@
 import { getData, buildApiFilters } from '@/app/lib/data';
+import { RegionAreaName } from '@/app/lib/types';
 
 /**
  * Fetches the daily rolling cases for a specific region.
@@ -9,7 +10,7 @@ import { getData, buildApiFilters } from '@/app/lib/data';
  * @param region - The region for which to fetch the cases.
  * @returns A promise that resolves to the fetched data.
  */
-export async function fetchDailyRollingCases(region: string) {
+export async function fetchDailyRollingCases(region: RegionAreaName) {
   const structure = {
     date: 'date',
     name: 'areaName',
@@ -18,7 +19,7 @@ export async function fetchDailyRollingCases(region: string) {
   };
 
   const apiParams = {
-    filters: buildApiFilters(region),
+    filters: buildApiFilters({ areaType: 'region', areaName: region }),
     structure: JSON.stringify(structure),
   };
 
@@ -33,7 +34,7 @@ export async function fetchDailyRollingCases(region: string) {
  * @param region The region for which to fetch the headline cases.
  * @returns A promise that resolves to the fetched headline cases data.
  */
-export async function fetchHeadlineCases(region: string) {
+export async function fetchHeadlineCases(region: RegionAreaName) {
   const structure = {
     date: 'date',
     name: 'areaName',
@@ -45,7 +46,7 @@ export async function fetchHeadlineCases(region: string) {
   };
 
   const apiParams = {
-    filters: buildApiFilters(region),
+    filters: buildApiFilters({ areaType: 'region', areaName: region }),
     structure: JSON.stringify(structure),
     latestBy: 'newCasesByPublishDateRollingSum',
   };

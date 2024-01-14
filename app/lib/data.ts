@@ -1,4 +1,10 @@
 import { getMaxDate, subMonths } from '@/app/lib/dates';
+import {
+  AreaType,
+  RegionAreaName,
+  NHSAreaName,
+  ChangeDirection,
+} from '@/app/lib/types';
 
 export async function getData(params: Record<string, string>) {
   const endpoint = 'https://api.coronavirus.data.gov.uk/v1/data';
@@ -20,14 +26,14 @@ export async function getData(params: Record<string, string>) {
   return resposeBody;
 }
 
-export function buildApiFilters(region: string) {
-  const isOverview = /^united.*?kingdom$/i.test(region);
-
-  const areaType = isOverview ? 'overview' : 'region';
-  const areaName = isOverview ? null : region;
-
-  const filters = [`areaType=${areaType}`, areaName && `areaName=${areaName}`];
-
+export function buildApiFilters({
+  areaType,
+  areaName,
+}: {
+  areaType: AreaType;
+  areaName: RegionAreaName | NHSAreaName;
+}) {
+  const filters = [`areaType=${areaType}`, `areaName=${areaName}`];
   return filters.join(';');
 }
 
@@ -41,4 +47,32 @@ export function filterToRange(
   const dataFiltered = data.filter((x) => x.date > startDate);
 
   return dataFiltered;
+}
+
+export function regionToNSHRegion(areaName: RegionAreaName): NHSAreaName {
+  switch (decodeURIComponent(areaName)) {
+    case 'East Midlands':
+    case 'West Midlands':
+      return 'Midlands';
+    case 'North East':
+    case 'Yorkshire and The Humber':
+      return 'North East and Yorkshire';
+  }
+
+  // @ts-ignore
+  return areaName;
+}
+
+export function getChangeDirection(value: number): ChangeDirection | undefined {
+  if (value > 0) {
+    return 'UP';
+  }
+  if (value === 0) {
+    return 'SAME';
+  }
+  if (value < 0) {
+    return 'DOWN';
+  }
+
+  return undefined;
 }

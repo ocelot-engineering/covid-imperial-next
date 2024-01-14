@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
 const links = [
-  { name: 'United Kingdom', href: '' },
   { name: 'East Midlands', href: 'East Midlands' },
   { name: 'East of England', href: 'East of England' },
   { name: 'London', href: 'London' },
