@@ -1,20 +1,22 @@
 'use client';
 
-import { Layout } from 'plotly.js';
-import Plot from 'react-plotly.js';
+import { PlotData, Layout, Config } from 'plotly.js';
+import { CasesByVariantData } from '@/app/types/types';
 
-function extractVariant(rawVariantName: string): string {
-  const cleanName = rawVariantName.match(/(?<=\().+(?=\))/);
-  if (cleanName) {
-    return cleanName[0];
-  }
-  return rawVariantName;
-}
+import dynamic from 'next/dynamic';
 
-export default function VariantPlot({ variants }: any) {
+const Plot = dynamic(() => import('react-plotly.js'), {
+  ssr: false,
+});
+
+export default function CasesByVariantPlot({
+  variants,
+}: {
+  variants: CasesByVariantData;
+}) {
   const data = buildTraces(variants);
 
-  const config = {
+  const config: Partial<Config> = {
     responsive: true,
     displayModeBar: false,
     scrollZoom: false,
@@ -26,6 +28,7 @@ export default function VariantPlot({ variants }: any) {
 
   const yaxis = {
     showgrid: false,
+    range: [0, 100],
   };
 
   const layout: Partial<Layout> = {
@@ -38,12 +41,20 @@ export default function VariantPlot({ variants }: any) {
   };
 
   return (
-    <Plot className="shadow-sm" data={data} layout={layout} config={config} />
+    <div className="shadow-sm bg-white p-1">
+      <Plot
+        className="w-full"
+        data={data}
+        layout={layout}
+        config={config}
+        useResizeHandler={true}
+      />
+    </div>
   );
 }
 
-function buildTraces(variants: any) {
-  let data: { x: string; y: number; name: string }[] = [];
+function buildTraces(variants: CasesByVariantData): Partial<PlotData>[] {
+  let data: Partial<PlotData>[] = [];
 
   for (let key of Object.keys(variants)) {
     if (isLowImpact(variants[key].newWeeklyPercentage)) {
@@ -55,7 +66,7 @@ function buildTraces(variants: any) {
       continue;
     }
 
-    let trace = {
+    let trace: Partial<PlotData> = {
       x: variants[key].date,
       y: variants[key].newWeeklyPercentage,
       name: extractVariant(key),
@@ -68,9 +79,17 @@ function buildTraces(variants: any) {
   return data;
 }
 
+function extractVariant(rawVariantName: string): string {
+  const cleanName = rawVariantName.match(/(?<=\().+(?=\))/);
+  if (cleanName) {
+    return cleanName[0];
+  }
+  return rawVariantName;
+}
+
 function isLowImpact(newWeeklyPercentage: number[]): boolean {
   const averageWeeklyPerc =
     newWeeklyPercentage.reduce((x, y) => x + y) / newWeeklyPercentage.length;
 
-  return averageWeeklyPerc < 0.05;
+  return averageWeeklyPerc < 5;
 }

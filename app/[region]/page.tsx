@@ -5,12 +5,12 @@ import {
   fetchHeadlineDeaths,
   fetchHeadlineAdmissions,
   fetchHeadlineTesting,
-} from '@/app/lib/fetch-headline-figures';
-import { getDailyRollingCases } from '@/app/lib/historical-cases';
-import { fetchVariants } from '@/app/lib/historical-variants';
+} from '@/app/lib/headline-figures';
+import { getCasesHistory } from '@/app/lib/historical-cases';
+import { getCasesByVariantHistory } from '@/app/lib/historical-variants';
 import HeadlineFigureWrapper from '@/app/ui/headline/headline-figures';
-import NewCasesLinePlot from '@/app/ui/plots/new-cases';
-import VariantPlot from '@/app/ui/plots/variants';
+import NewCasesPlot from '@/app/ui/plots/new-cases';
+import CasesByVariantPlot from '@/app/ui/plots/cases-by-variant';
 
 export const metadata: Metadata = {
   title: 'London COVID-19 Dashboard',
@@ -28,8 +28,8 @@ export default async function Page({
   const headlineAdmissions = await fetchHeadlineAdmissions(region);
   const headlineTesting = await fetchHeadlineTesting(region);
 
-  const newCasesHistory = await getDailyRollingCases(region);
-  const variantsHistory = await fetchVariants(region);
+  const casesHistory = await getCasesHistory(region);
+  const casesByVariantHistory = await getCasesByVariantHistory(region);
 
   return (
     <div>
@@ -42,8 +42,8 @@ export default async function Page({
         />
       </div>
       <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2 py-10 h-fit ">
-        <NewCasesLinePlot newCases={newCasesHistory} />
-        <VariantPlot variants={variantsHistory} />
+        <NewCasesPlot newCases={casesHistory} />
+        <CasesByVariantPlot variants={casesByVariantHistory} />
       </div>
     </div>
   );

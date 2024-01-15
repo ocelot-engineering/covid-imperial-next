@@ -1,12 +1,22 @@
 'use client';
 
-import { PlotData, Layout } from 'plotly.js';
-import Plot from 'react-plotly.js';
+import { PlotData, Layout, Config } from 'plotly.js';
+import { CaseHistoryItem } from '@/app/types/types';
 
-export default function NewCasesLinePlot({ newCases }: any) {
+import dynamic from 'next/dynamic';
+
+const Plot = dynamic(() => import('react-plotly.js'), {
+  ssr: false,
+});
+
+export default function NewCasesPlot({
+  newCases,
+}: {
+  newCases: CaseHistoryItem[];
+}) {
   const traceNewCasesRollingAverage: Partial<PlotData> = {
     x: newCases.map((item: { date: string }) => item.date),
-    y: newCases.map((item: { rollingCases: string }) => item.rollingCases),
+    y: newCases.map((item: { rollingCases: number }) => item.rollingCases),
     type: 'scatter',
     mode: 'lines',
     marker: { color: 'red' },
@@ -14,7 +24,7 @@ export default function NewCasesLinePlot({ newCases }: any) {
 
   const data = [traceNewCasesRollingAverage];
 
-  const config = {
+  const config: Partial<Config> = {
     responsive: true,
     displayModeBar: false,
     scrollZoom: false,
@@ -36,6 +46,14 @@ export default function NewCasesLinePlot({ newCases }: any) {
   };
 
   return (
-    <Plot className="shadow-sm" data={data} layout={layout} config={config} />
+    <div className="shadow-sm bg-white p-1">
+      <Plot
+        className="w-full"
+        data={data}
+        layout={layout}
+        config={config}
+        useResizeHandler={true}
+      />
+    </div>
   );
 }

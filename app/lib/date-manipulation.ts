@@ -18,13 +18,13 @@ export function getMaxDate(dateStrings: string[]): string {
 }
 
 /**
- * Subtracts the specified number of months from the given date.
+ * Subtracts X months from the given date.
  *
  * @param dateString - The date string in ISO format.
  * @param months - The number of months to subtract.
  * @returns The resulting date string after subtracting the specified number of months.
  */
-export function subMonths(dateString: string, months: number) {
+export function subMonths(dateString: string, months: number): string {
   let date = new Date(dateString);
   date.setMonth(date.getMonth() - months);
   const dateSubbed = date.toISOString().split('T')[0];

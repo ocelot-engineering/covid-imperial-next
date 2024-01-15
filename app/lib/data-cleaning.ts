@@ -6,6 +6,7 @@ import {
 
 /**
  * Maps a region area name to an NHS area name.
+ *
  * @param areaName The region area name to map.
  * @returns NHS region.
  */
@@ -25,6 +26,7 @@ export function regionToNHSRegion(areaName: RegionAreaName): NHSAreaName {
 
 /**
  * Maps a number to an allowed change direction.
+ *
  * @param value - The value to determine the change direction for.
  * @returns change direction string.
  */

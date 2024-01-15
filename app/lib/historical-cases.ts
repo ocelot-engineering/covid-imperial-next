@@ -1,6 +1,6 @@
-import { getData, buildApiFilters } from '@/app/lib/get-data';
-import { RegionAreaName } from '@/app/types/types';
-import { filterToRange } from '@/app/lib/filter-data';
+import { getData, buildApiFilters } from '@/app/lib/data-fetching';
+import { RegionAreaName, CaseHistoryItem } from '@/app/types/types';
+import { filterToRange } from '@/app/lib/data-filtering';
 
 /**
  * Fetches the daily rolling cases for a specific region.
@@ -11,7 +11,9 @@ import { filterToRange } from '@/app/lib/filter-data';
  * @param region - The region for which to fetch the cases.
  * @returns A promise that resolves to the fetched data.
  */
-export async function fetchDailyRollingCases(region: RegionAreaName) {
+async function fetchDailyRollingCases(
+  region: RegionAreaName
+): Promise<CaseHistoryItem[]> {
   const structure = {
     date: 'date',
     name: 'areaName',
@@ -29,8 +31,11 @@ export async function fetchDailyRollingCases(region: RegionAreaName) {
   return res.data;
 }
 
-export async function getDailyRollingCases(region: RegionAreaName) {
+export async function getCasesHistory(
+  region: RegionAreaName
+): Promise<CaseHistoryItem[]> {
   const cases = await fetchDailyRollingCases(region);
-  const filteredCases = filterToRange(cases, 13);
+  const filteredCases = filterToRange(cases, 13) as CaseHistoryItem[];
+
   return filteredCases;
 }

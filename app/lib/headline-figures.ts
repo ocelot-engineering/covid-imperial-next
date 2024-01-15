@@ -1,9 +1,10 @@
-import { getData, buildApiFilters } from '@/app/lib/get-data';
-import { regionToNHSRegion, getChangeDirection } from '@/app/lib/clean-data';
+import { getData, buildApiFilters } from '@/app/lib/data-fetching';
+import { regionToNHSRegion, getChangeDirection } from '@/app/lib/data-cleaning';
 import { HeadlineData, RegionAreaName } from '@/app/types/types';
 
 /**
  * Fetches the headline cases for a specific region.
+ *
  * Published case dates are used for this since specimen case dates are considered incomplete for most recent days.
  * @param region The region for which to fetch the headline cases.
  * @returns A promise that resolves to the fetched headline cases data.
@@ -34,6 +35,7 @@ export async function fetchHeadlineCases(
 
 /**
  * Fetches the headline deaths for a specific region.
+ *
  * Published death dates are used for this since specimen death dates are considered incomplete for most recent days.
  * @param region The region for which to fetch the headline death.
  * @returns A promise that resolves to the fetched headline death data.

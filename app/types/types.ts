@@ -22,7 +22,7 @@ export type NHSAreaName =
 
 export type ChangeDirection = 'UP' | 'DOWN' | 'SAME' | 'NONE';
 
-export type HeadlineData = {
+export interface HeadlineData {
   date: string;
   name?: RegionAreaName;
   code?: string;
@@ -30,4 +30,16 @@ export type HeadlineData = {
   changeNum: number;
   changePerc: number;
   changeDirection: ChangeDirection;
-};
+}
+
+export interface CasesByVariantData {
+  [key: string]: {
+    date: string[];
+    newWeeklyPercentage: number[];
+  };
+}
+
+export interface CaseHistoryItem {
+  date: string;
+  rollingCases: number;
+}

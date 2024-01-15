@@ -1,25 +1,28 @@
-import { getData, buildApiFilters } from '@/app/lib/get-data';
-import { filterToRange } from '@/app/lib/filter-data';
-import { RegionAreaName } from '@/app/types/types';
+import { getData, buildApiFilters } from '@/app/lib/data-fetching';
+import { filterToRange } from '@/app/lib/data-filtering';
+import { RegionAreaName, CasesByVariantData } from '@/app/types/types';
 
-interface VariantDateRow {
+interface RawCasesByVariantDataItem {
   date: string;
-  variant: VariantSetRow[];
+  variant: {
+    variant: string;
+    newWeeklyPercentage: number;
+  }[];
 }
 
-interface VariantSetRow {
-  variant: string;
-  newWeeklyPercentage: number;
+type RawCasesByVariantData = RawCasesByVariantDataItem[];
+
+export async function getCasesByVariantHistory(
+  region: RegionAreaName
+): Promise<CasesByVariantData> {
+  const res = (await fetchVariants(region)) as RawCasesByVariantData;
+  const filteredRes = filterToRange(res, 13) as RawCasesByVariantData;
+  const transformedRes = transformVariantsData(filteredRes);
+
+  return transformedRes;
 }
 
-interface VariantDataTransformed {
-  [variant: string]: {
-    date: string[];
-    newWeeklyPercentage: number[];
-  };
-}
-
-export async function fetchVariants(region: RegionAreaName) {
+async function fetchVariants(region: RegionAreaName) {
   const structure = {
     date: 'date',
     name: 'areaName',
@@ -34,17 +37,16 @@ export async function fetchVariants(region: RegionAreaName) {
 
   const res = await getData(apiParams);
 
-  const filteredRes = filterToRange(res.data, 13);
-  const transformedRes = transformVariantsData(filteredRes);
-
-  return transformedRes;
+  return res.data;
 }
 
-function transformVariantsData(data: VariantDateRow[]): VariantDataTransformed {
-  let variantsTransformed: VariantDataTransformed = {};
+function transformVariantsData(
+  data: RawCasesByVariantData
+): CasesByVariantData {
+  let variantsTransformed: CasesByVariantData = {};
 
-  data.forEach((dateRow: VariantDateRow) => {
-    dateRow.variant.forEach((variantSetRow: VariantSetRow) => {
+  data.forEach((dateRow) => {
+    dateRow.variant.forEach((variantSetRow) => {
       // Check if key exists, if not then create one
       !variantsTransformed.hasOwnProperty(variantSetRow.variant) &&
         (variantsTransformed[variantSetRow.variant] = {

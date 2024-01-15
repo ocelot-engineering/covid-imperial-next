@@ -1,4 +1,4 @@
-import { regionToNHSRegion, getChangeDirection } from '@/app/lib/clean-data';
+import { regionToNHSRegion, getChangeDirection } from '@/app/lib/data-cleaning';
 
 describe('NHS region mapping', () => {
   it('correctly maps Midlands regions', () => {
