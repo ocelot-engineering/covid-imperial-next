@@ -6,7 +6,7 @@ import {
   QuestionMarkCircleIcon,
 } from '@heroicons/react/24/outline';
 import { clsx } from 'clsx';
-import { ChangeDirection } from '@/app/lib/types';
+import { ChangeDirection } from '@/app/types/types';
 
 const iconMap = {
   flag: FlagIcon,

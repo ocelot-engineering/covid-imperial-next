@@ -1,5 +1,6 @@
-import { getData, buildApiFilters, filterToRange } from '@/app/lib/data';
-import { RegionAreaName } from '@/app/lib/types';
+import { getData, buildApiFilters } from '@/app/lib/get-data';
+import { filterToRange } from '@/app/lib/filter-data';
+import { RegionAreaName } from '@/app/types/types';
 
 interface VariantDateRow {
   date: string;

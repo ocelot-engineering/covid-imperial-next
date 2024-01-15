@@ -21,3 +21,13 @@ export type NHSAreaName =
   | 'South West';
 
 export type ChangeDirection = 'UP' | 'DOWN' | 'SAME' | 'NONE';
+
+export type HeadlineData = {
+  date: string;
+  name?: RegionAreaName;
+  code?: string;
+  value: number;
+  changeNum: number;
+  changePerc: number;
+  changeDirection: ChangeDirection;
+};

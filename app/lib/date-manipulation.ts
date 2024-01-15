@@ -1,10 +1,15 @@
 /**
  * Returns the maximum date from an array of date strings.
+ *
  * This is useful to avoid having to deal with timezones.
- * @param {string[]} dateStrings - An array of date strings.
- * @returns {string} The maximum date from the array.
+ * @param dateStrings - An array of date strings.
+ * @returns The maximum date from the array.
  */
-export function getMaxDate(dateStrings) {
+export function getMaxDate(dateStrings: string[]): string {
+  if (dateStrings.length == 0) {
+    throw new Error('dateStrings array must have at least 1 date');
+  }
+
   let maxDate = dateStrings.reduce((max, currentDate) => {
     return currentDate > max ? currentDate : max;
   }, dateStrings[0]);

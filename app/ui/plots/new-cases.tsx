@@ -35,5 +35,7 @@ export default function NewCasesLinePlot({ newCases }: any) {
     hovermode: 'x unified',
   };
 
-  return <Plot data={data} layout={layout} config={config} />;
+  return (
+    <Plot className="shadow-sm" data={data} layout={layout} config={config} />
+  );
 }
