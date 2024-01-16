@@ -12,6 +12,11 @@ interface RawCasesByVariantDataItem {
 
 type RawCasesByVariantData = RawCasesByVariantDataItem[];
 
+/**
+ * Retrieves the historical cases by variant data for a specific region.
+ * @param region The name of the region.
+ * @returns A promise that resolves to new cases by variant data.
+ */
 export async function getCasesByVariantHistory(
   region: RegionAreaName
 ): Promise<CasesByVariantData> {
@@ -22,6 +27,11 @@ export async function getCasesByVariantHistory(
   return transformedRes;
 }
 
+/**
+ * Fetches new cases by variants data for a specific region.
+ * @param region The name of the region.
+ * @returns A Promise that resolves to variant by date.
+ */
 async function fetchVariants(region: RegionAreaName) {
   const structure = {
     date: 'date',
@@ -40,6 +50,11 @@ async function fetchVariants(region: RegionAreaName) {
   return res.data;
 }
 
+/**
+ * Transforms the raw cases by variant data into a more structured format.
+ * @param data The raw cases by variant data to be transformed.
+ * @returns each variant with daily percentage of cases.
+ */
 function transformVariantsData(
   data: RawCasesByVariantData
 ): CasesByVariantData {

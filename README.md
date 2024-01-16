@@ -1,8 +1,6 @@
-# Exercise UK COVID-19 API
+# Exercise: UK COVID-19 API
 
 The purpose of this README is guide reviewers rather than on-board new developers.
-
-I suggest a reviewer skim through the entire README and take note of the sections of interested.
 
 # Specification
 
@@ -24,17 +22,17 @@ This project was developed to demonstrate three things:
 
 From the user story above we can make several assumptions:
 
-- Users are more interested in historical COVID-19 information (as opposed to current and predicted information) since they want to see changes over time.
-  - Information will most likely be presented in time series plots since they are so good at showing changes over time.
-- The user story explicitly mentions "cases" but not deaths, testing, etc. But, we will assume cases mean more than raw cases since cases only tell a small part of the story.
+- Users are more interested in historical COVID-19 information (as opposed to current and predicted information) since they want to see how cases have been changing over time.
+  - Information will most likely be presented in time series plots since they are so good at showing these types of changes.
+- The user story explicitly mentions "cases" but not deaths, testing, etc. Although, we will assume cases means more than just raw cases since this would only tell a small part of the story.
   - If the user is interested in seeing how COVID-19 cases have changed over time, they would likely be interested in information such as testing positivity, death rate, spread rate, seasonal patterns, etc.
 - We will assume the user only wants to view this app and nothing else, therefore there is no need to export data or plots into other software.
-- "As a UK citizen" can be taken less literally, and assume to anyone interested in COVID-19 in the UK. Therefore, there is no need to authenticate before accessing the app.
-- Users are only interested in their specific region and not interested in national information.
+- "As a UK citizen" will not be take literally, we will assume the user is anyone interested in UK COVID-19 information. Therefore, there is no need to authenticate before accessing the app.
+- Users are only interested in their specific region and not interested in national information, therefore we not provide a national view.
 
 From these assumptions the following features will be built:
 
-- Selectable region that changes the information shown.
+- A selectable region dropdown.
 - Time series plot of new cases.
 - Time series plot of variant type by percentage.
 
@@ -44,7 +42,7 @@ From these assumptions the following features will be built:
 
 ## Code Structure
 
-The tech stack for this web app is:
+The tech stack for this app is:
 
 - [React](https://react.dev/)
 - [Next.js](https://nextjs.org/) (React framework)
@@ -64,13 +62,13 @@ The tech stack for this web app is:
 │   ├── layout.tsx             <- Root layout, shared UI styling that applies to all routes.
 │   ├── page.tsx               <- Unique UI of home route, i.e. home page.
 │   ├── lib                    <- Contains functions used in the application, such as reusable utility functions and data fetching functions.
-│   │   └── __tests__          <- Jest tests for lib
-│   ├── [region]               <- Dynamic route for regions
-│   │   ├── layout.tsx         <- Shared UI for region page and its children.
-│   │   └── page.tsx           <- Unique UI of region route, i.e. all region pages.
+│   │   └── __tests__          <- Jest tests for app/lib functions.
+│   ├── [region]               <- Dynamic route for regions.
+│   │   ├── layout.tsx         <- Shared UI for the region page and its children.
+│   │   └── page.tsx           <- Unique UI for the region route, i.e. all region pages.
 │   ├── types                  <- TypeScript types and interfaces.
 │   └── ui                     <- Contains all the UI components for the application, such as headline cards and plots.
-│       ├── dashboard          <- Dashboard components such as header navigation, icons, etc.
+│       ├── dashboard          <- Dashboard components such as header, navigation, icons, etc.
 │       ├── headline           <- Headline components for new cases, deaths, etc.
 │       ├── plots              <- Plot components such as new cases and new cases by variant.
 │       ├── fonts.ts           <- All fonts used throughout the application.
@@ -80,7 +78,6 @@ The tech stack for this web app is:
 ├── tests                      <- End-to-end tests.
 ├── jest.config.ts             <- Configuration for Jest testing.
 ├── next.config.js             <- Next.js framework configuration.
-├── next-env.d.ts              <- TypeScript declaration file for Next.js
 ├── package.json               <- Project dependencies and scripts.
 ├── playwright.config.ts       <- Playwright end-to-end testing configuration.
 ├── postcss.config.js          <- PostCSS config used by tailwind css.
@@ -93,9 +90,9 @@ The tech stack for this web app is:
 
 - This structure is very similar to recommended best practices for a Next.js app.
 - The main code to review is in the `app/` directory.
-- Note that the testing is split up
-  - Unit tests are close to the units they are testing.
-  - E2E tests are in a separate `tests/` folder in the root directory.
+- Note that the testing is split up into two areas.
+  - Unit tests (Jest tests) are close to the units they are testing.
+  - E2E tests (Playwright tests) are in a separate `tests/` folder in the root directory.
 
 ## Testing
 
@@ -105,6 +102,8 @@ Testing is done using two tools
 - [Playwright](https://playwright.dev/) for end-to-end testing.
 
 ### Unit Tests
+
+To run unit tests:
 
 ```sh
 npm run test
@@ -121,14 +120,14 @@ npm run e2e-test # will launch the prod version of the app locally then run e2e 
 
 **Note**
 
-- E2E testing requires an internet connection since it accesses live data.
+- E2E testing requires an internet connection since it fetches live data.
 
 ### API Tests
 
-Ideally there would be tests for API the application depends on rather than blindly trusting a source we don't own.
+Ideally there would be tests for API dependency on rather than blindly trusting a data source we don't own.
 
 - These tests should be built from scripts used during exploration of the API.
-- Unfortunately, exploration was very ad-hoc in this case and no scripts were saved. (This is noted as a [lesson for next time](#lessons-for-next-time))
+- Unfortunately, exploration was very ad-hoc and no scripts were saved. (This is noted as a [lesson for next time](#lessons-for-next-time))
 
 ### Going Further
 
@@ -136,15 +135,15 @@ Ideally there would be tests for API the application depends on rather than blin
 
 - The ability to test this application offline is a must, right now an internet connection is required to perform end-to-end testing. If the API was to go down, it would disable testing and impact development and deployments.
 - To address this, testing data should be created and saved (not in this repo unless the data is very small).
-- Use of test data should be easily doable with `getData`. This could be done by allowing the `endpoint` to be passed into the function.
+- `getData` should be able to easily return this test data. This could be done by allowing the `endpoint` to be passed into the function.
 
 #### Expanding Testing
 
-- There are currently not too many tests, and much of the application is not being properly tested.
-- Lack of testing can cause technical debt to get out of control and never be recovered, therefore testing should be built either before the functions are written (test-driven-development) or at the same time they are written.
-- My testing strategy for this project would be:
+- Currently, there are not too many tests, and much of the application is not being properly tested.
+- Lack of testing early on can cause technical debt to get out of control which may never be recovered. Therefore testing should be built either before the functions are written (test-driven-development) or at the same time they are written.
+- My testing strategy moving forward with this project would be:
   - Start by ensuring all functions are unit tested. This means all functions are small and easily testable.
-  - If refactoring is required, built tests before refactoring to ensure integrity.
+  - If refactoring is required, build tests before refactoring to ensure integrity.
   - Then move onto end-to-end tests.
   - When the app gets very large, start building "controllers" that make e2e testing easier.
 
@@ -159,6 +158,8 @@ Ideally there would be tests for API the application depends on rather than blin
 To run the app locally I suggest opening in the devcontainer then running the commands below.
 
 If not running in a devcontainer you will likely have to run `scripts/install-dependencies.sh` to install dependencies via [NPM](https://www.npmjs.com/).
+
+This will be a bit slow on first load, but then things will be cached and it will run a lot smoother.
 
 ### Dev Version
 
@@ -175,20 +176,21 @@ npm start
 
 # Next Steps
 
-While this app is small it is far from finished. These are the next steps I would take (roughly in order of importance).
+While this app is small, even with it's current feature set it's far from finished. These are the next steps I would take (roughly in order of importance).
 
 - Enable offline testing.
 - CI pipeline to trigger testing (github actions).
-- Add tests for API, document API quirks in a central location.
+- Add tests for API and document API quirks.
 - Expand testing to a point of "reasonable" coverage.
 - Add minimum UX features such as:
-  - Add loading skeletons for components
-  - Add an error page
+  - Add loading skeletons for components since it's not clear when loading is happening.
+  - Add an error page for missing routes.
 - Improve styling to make it look a lot nicer.
+- Improve landing page look.
 - Change plotting library (move away from plotly, move to visx, chartjs or tremor since they seem to work nicely with NextJS).
 - Design more features and keep building!
 
 # Lessons for Next Time
 
-1. Reproducible API exploration - did some in R and Postman, but I wish I saved the working.
-2. Plotly was throwing a lot of warnings in the console due to not playing nicely with server side rendering. Will try a different library when working in NextJS.
+1. Reproducible API exploration - Did some in R and Postman, but should have saved the working so they could be used for automated API tests.
+2. Plotly was initially throwing some warnings in the console due to not playing nicely with server side rendering. Will try a different library when working in NextJS.

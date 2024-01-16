@@ -1,5 +1,8 @@
 import Image from 'next/image';
 
+/**
+ * Renders the GitHub icon.
+ */
 export function GitHubIcon() {
   return (
     <div className="rounded-full w-7 md:w-9 hover:outline hover:outline-slate-200 hover:bg-slate-200">

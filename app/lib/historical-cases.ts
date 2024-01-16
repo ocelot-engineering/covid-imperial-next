@@ -31,6 +31,13 @@ async function fetchDailyRollingCases(
   return res.data;
 }
 
+/**
+ * Retrieves the historical case data for a specific region.
+ *
+ * This fetches the data and transforms it to be the in the right format
+ * @param region The name of the region.
+ * @returns A promise that resolves to an array of CaseHistoryItem objects.
+ */
 export async function getCasesHistory(
   region: RegionAreaName
 ): Promise<CaseHistoryItem[]> {

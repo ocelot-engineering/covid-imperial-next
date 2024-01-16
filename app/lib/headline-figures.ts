@@ -64,6 +64,12 @@ export async function fetchHeadlineDeaths(
   return res.data[0];
 }
 
+/**
+ * Fetches the headline hospital for a specific region.
+ *
+ * @param region The region for which to fetch the headline hospital admissions.
+ * @returns A promise that resolves to the fetched headline hospital admissions data.
+ */
 export async function fetchHeadlineAdmissions(
   region: RegionAreaName
 ): Promise<HeadlineData> {
@@ -90,6 +96,13 @@ export async function fetchHeadlineAdmissions(
   return res.data[0];
 }
 
+/**
+ * Fetches the headline virus testing for a specific region.
+ *
+ * Published virus testing dates are used for this since specimen virus testing dates are considered incomplete for most recent days.
+ * @param region The region for which to fetch the headline virus testing.
+ * @returns A promise that resolves to the fetched headline virus testing data.
+ */
 export async function fetchHeadlineTesting(
   region: RegionAreaName
 ): Promise<HeadlineData> {
