@@ -9,8 +9,15 @@ import {
 import { getCasesHistory } from '@/app/lib/historical-cases';
 import { getCasesByVariantHistory } from '@/app/lib/historical-variants';
 import HeadlineFigureWrapper from '@/app/ui/headline/headline-figures';
-import NewCasesPlot from '@/app/ui/plots/new-cases';
-import CasesByVariantPlot from '@/app/ui/plots/cases-by-variant';
+import dynamic from 'next/dynamic';
+
+const NewCasesPlot = dynamic(() => import('@/app/ui/plots/new-cases'), {
+  ssr: false,
+});
+const CasesByVariantPlot = dynamic(
+  () => import('@/app/ui/plots/cases-by-variant'),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: 'London COVID-19 Dashboard',

@@ -1,13 +1,8 @@
 'use client';
 
 import { PlotData, Layout, Config } from 'plotly.js';
+import Plot from 'react-plotly.js';
 import { CasesByVariantData } from '@/app/types/types';
-
-import dynamic from 'next/dynamic';
-
-const Plot = dynamic(() => import('react-plotly.js'), {
-  ssr: false,
-});
 
 export default function CasesByVariantPlot({
   variants,
@@ -58,11 +53,6 @@ function buildTraces(variants: CasesByVariantData): Partial<PlotData>[] {
 
   for (let key of Object.keys(variants)) {
     if (isLowImpact(variants[key].newWeeklyPercentage)) {
-      console.log(
-        `${extractVariant(
-          key
-        )} is low impact and will not be shown on the plot.`
-      );
       continue;
     }
 

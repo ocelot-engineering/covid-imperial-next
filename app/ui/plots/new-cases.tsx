@@ -1,13 +1,8 @@
 'use client';
 
 import { PlotData, Layout, Config } from 'plotly.js';
+import Plot from 'react-plotly.js';
 import { CaseHistoryItem } from '@/app/types/types';
-
-import dynamic from 'next/dynamic';
-
-const Plot = dynamic(() => import('react-plotly.js'), {
-  ssr: false,
-});
 
 export default function NewCasesPlot({
   newCases,

@@ -22,16 +22,20 @@ export default function NavDropdown() {
   const router = useRouter();
 
   return (
-    <select
-      className="rounded-md border border-gray-200 py-[9px] px-6 text-sm outline-2 h-10 content-center"
-      onChange={(event) => router.push(event.target.value)}
-      defaultValue={pathname}
-    >
-      {links.map((link) => (
-        <option key={link.name} value={link.href}>
-          {link.name}
-        </option>
-      ))}
-    </select>
+    <div className="font-bold">
+      <select
+        id="region"
+        name="regionValue"
+        className="rounded-md border border-gray-200 text-xs md:text-sm outline-2 h-10 px-4"
+        onChange={(event) => router.push(event.target.value)}
+        defaultValue={pathname}
+      >
+        {links.map((link) => (
+          <option key={link.name} value={link.href}>
+            {link.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
